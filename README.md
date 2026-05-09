@@ -85,7 +85,7 @@ python entrypoint.py
 
 ```bash
 # 1. Verify the GitHub MCP server starts
-npx -y @github-mcp-server/github-mcp-server stdio
+npx -y @modelcontextprotocol/server-github
 
 # 2. Verify MCP tool loading
 python - <<'EOF'
@@ -93,11 +93,11 @@ import asyncio
 from agent.tools import make_mcp_client
 
 async def test():
-    async with make_mcp_client() as client:
-        tools = await client.get_tools()
-        print(f"Loaded {len(tools)} tools:")
-        for t in tools[:10]:
-            print(f"  {t.name}")
+    client = make_mcp_client()
+    tools = await client.get_tools()
+    print(f"Loaded {len(tools)} tools:")
+    for t in tools[:10]:
+        print(f"  {t.name}")
 
 asyncio.run(test())
 EOF
