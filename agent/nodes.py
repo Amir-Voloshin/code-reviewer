@@ -38,6 +38,9 @@ class ReviewDecision(BaseModel):
 
 
 def _parse(result) -> dict | list:
+    # MCP tools return content blocks: [{"type": "text", "text": "<json>"}]
+    if isinstance(result, list) and result and isinstance(result[0], dict) and result[0].get("type") == "text":
+        result = result[0]["text"]
     if isinstance(result, (dict, list)):
         return result
     if isinstance(result, str):
@@ -77,20 +80,8 @@ def make_fetch_pr_node(tools_by_name: dict) -> Callable:
             pr_raw = await pr_tool.ainvoke(params)
             files_raw = await files_tool.ainvoke(params)
 
-            log.info("fetch_pr: pr_raw type=%s value=%s", type(pr_raw).__name__, repr(pr_raw)[:500])
-            log.info("fetch_pr: files_raw type=%s value=%s", type(files_raw).__name__, repr(files_raw)[:500])
-
             pr_data = _parse(pr_raw)
             files_data = _parse(files_raw)
-
-            log.info("fetch_pr: files_data type=%s value=%s", type(files_data).__name__, repr(files_data)[:500])
-
-            # Unwrap if the response is a dict with a list inside
-            if isinstance(files_data, dict):
-                for key in ("files", "data", "items", "value"):
-                    if isinstance(files_data.get(key), list):
-                        files_data = files_data[key]
-                        break
 
             # Build unified diff text from per-file patches
             diff_parts: list[str] = []
