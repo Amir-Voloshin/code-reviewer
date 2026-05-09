@@ -71,7 +71,7 @@ def make_fetch_pr_node(tools_by_name: dict) -> Callable:
             params = {
                 "owner": state["repo_owner"],
                 "repo": state["repo_name"],
-                "pullNumber": state["pr_number"],
+                "pull_number": state["pr_number"],
             }
 
             pr_raw = await pr_tool.ainvoke(params)
@@ -183,7 +183,7 @@ def make_post_review_node(tools_by_name: dict) -> Callable:
             params = {
                 "owner": state["repo_owner"],
                 "repo": state["repo_name"],
-                "pullNumber": state["pr_number"],
+                "pull_number": state["pr_number"],
                 "body": body,
                 "event": event,
                 "comments": github_comments,
@@ -307,7 +307,7 @@ def make_handle_error_node(tools_by_name: dict) -> Callable:
                     {
                         "owner": state["repo_owner"],
                         "repo": state["repo_name"],
-                        "issueNumber": state["pr_number"],
+                        "issue_number": state["pr_number"],
                         "body": (
                             f"## AI PR Reviewer — Error\n\n"
                             f"The review agent encountered an error and could not complete.\n\n"
