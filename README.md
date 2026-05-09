@@ -89,37 +89,7 @@ cp .env.example .env
 # edit .env with your tokens and PR details
 
 # Run against a real PR
-source .env
-python entrypoint.py
-```
-
-### Smoke tests
-
-```bash
-# 1. Verify the GitHub MCP server starts
-npx -y @modelcontextprotocol/server-github
-
-# 2. Verify MCP tool loading
-python - <<'EOF'
-import asyncio
-from agent.tools import make_mcp_client
-
-async def test():
-    client = make_mcp_client()
-    tools = await client.get_tools()
-    print(f"Loaded {len(tools)} tools:")
-    for t in tools[:10]:
-        print(f"  {t.name}")
-
-asyncio.run(test())
-EOF
-
-# 3. Verify LLM connection
-python - <<'EOF'
-from agent.model import get_llm
-llm = get_llm()
-print(llm.invoke("Say hello in one word.").content)
-EOF
+python3 entrypoint.py --pr <PR_NUMBER>
 ```
 
 ---

@@ -1,5 +1,6 @@
 import json
 import logging
+import time
 from pathlib import Path
 from typing import Callable
 
@@ -168,7 +169,7 @@ def make_post_review_node(tools_by_name: dict) -> Callable:
             comments = state.get("review_comments", [])
 
             if comments:
-                event = "REQUEST_CHANGES"
+                event = "COMMENT"
                 body = (
                     f"## AI Code Review\n\n"
                     f"Found **{len(comments)}** issue(s) that need attention.\n\n"
@@ -207,7 +208,7 @@ def make_create_fix_branch_node(tools_by_name: dict) -> Callable:
         if state.get("error"):
             return {}
 
-        branch_name = f"ai-review/{state['pr_number']}"
+        branch_name = f"ai-review/{state['pr_number']}-{int(time.time())}"
         log.info("create_fix_branch: creating branch %s", branch_name)
         try:
             branch_tool = _tool(tools_by_name, "create_branch")

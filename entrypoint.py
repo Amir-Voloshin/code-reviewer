@@ -1,7 +1,11 @@
+import argparse
 import asyncio
 import logging
 import os
 import sys
+
+from dotenv import load_dotenv
+load_dotenv()
 
 from agent.graph import build_graph
 from agent.state import PRReviewState
@@ -24,9 +28,15 @@ def _require(name: str) -> str:
 
 
 async def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--pr", type=int, help="PR number to review (overrides PR_NUMBER env var)")
+    args = parser.parse_args()
+
+    pr_number = args.pr or int(_require("PR_NUMBER"))
+
     initial_state: PRReviewState = {
         "messages": [],
-        "pr_number": int(_require("PR_NUMBER")),
+        "pr_number": pr_number,
         "repo_owner": _require("REPO_OWNER"),
         "repo_name": _require("REPO_NAME"),
         "pr_head_branch": _require("PR_HEAD_BRANCH"),
