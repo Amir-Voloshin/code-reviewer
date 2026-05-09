@@ -49,12 +49,12 @@ async def main() -> None:
         initial_state["pr_number"],
     )
 
-    async with make_mcp_client() as client:
-        tools = await client.get_tools()
-        log.info("Loaded %d MCP tools from GitHub server", len(tools))
+    client = make_mcp_client()
+    tools = await client.get_tools()
+    log.info("Loaded %d MCP tools from GitHub server", len(tools))
 
-        graph = build_graph(tools)
-        result = await graph.ainvoke(initial_state)
+    graph = build_graph(tools)
+    result = await graph.ainvoke(initial_state)
 
     if result.get("error"):
         log.error("Agent finished with error: %s", result["error"])
