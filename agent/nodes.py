@@ -239,7 +239,7 @@ def make_apply_fixes_node(tools: list) -> Callable:
         try:
             system_prompt = (_PROMPTS_DIR / "fixer.md").read_text()
             llm = get_llm()
-            fix_agent = create_react_agent(llm, tools, state_modifier=system_prompt)
+            fix_agent = create_react_agent(llm, tools, prompt=system_prompt)
 
             task = (
                 f"Apply the following code review fixes to the repository.\n\n"
