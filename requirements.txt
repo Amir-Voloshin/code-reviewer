@@ -1,0 +1,7 @@
+langgraph>=0.2
+langchain>=0.3
+langchain-mcp-adapters>=0.1
+langchain-anthropic>=0.2
+langchain-openai>=0.2
+langchain-google-genai>=2.0
+pydantic>=2.0

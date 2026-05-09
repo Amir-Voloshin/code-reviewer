@@ -1,0 +1,55 @@
+name: AI PR Reviewer
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# Required to post review comments and create branches/PRs
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  review:
+    name: Review PR with AI Agent
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run AI PR Review Agent
+        env:
+          # GitHub auth — built-in token works for same-repo PRs
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+          # LLM configuration — set these as repository secrets
+          LLM_PROVIDER: ${{ secrets.LLM_PROVIDER }}
+          LLM_MODEL: ${{ secrets.LLM_MODEL }}
+
+          # API keys — set whichever matches your LLM_PROVIDER
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+          # PR context injected automatically from the event payload
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO_OWNER: ${{ github.repository_owner }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          PR_HEAD_BRANCH: ${{ github.head_ref }}
+          PR_BASE_BRANCH: ${{ github.base_ref }}
+
+        run: python entrypoint.py
