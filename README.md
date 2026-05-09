@@ -1,4 +1,4 @@
-# AI PR Reviewer
+# Agentic Code Reviewer
 
 An AI agent that automatically reviews pull requests using [LangGraph](https://github.com/langchain-ai/langgraph), the [GitHub MCP server](https://github.com/github/github-mcp-server), and any LLM you choose. When it finds bugs or security issues, it opens a second PR with the fixes applied.
 
@@ -10,6 +10,16 @@ PR opened
                 └── Issues found → Creates fix branch → Applies fixes → Opens fix PR
 ```
 
+---
+
+## Example
+
+![AI Code Reviewer leaving inline comments on a PR](issue_example.png)
+
+The agent posts a top-level review summary and inline comments pinned to the exact lines where issues are found.
+
+---
+
 ## How it works
 
 1. A GitHub Actions workflow triggers on every `pull_request` event
@@ -17,6 +27,8 @@ PR opened
 3. The review node uses structured output to produce typed inline comments
 4. If fixes are needed, a ReAct fix agent reads each file, applies minimal changes, and commits them to a new branch
 5. A fix PR is opened targeting the original PR's base branch
+
+---
 
 ## Quick start
 
@@ -48,7 +60,7 @@ You need exactly **3 secrets**: the two required ones + the API key for your cho
 
 ### 4. Open a PR
 
-Create any branch with code changes and open a PR. The **AI PR Reviewer** workflow starts automatically. Check the **Actions** tab to watch it run.
+Create any branch with code changes and open a PR. The **Agentic Code Reviewer** workflow starts automatically. Check the **Actions** tab to watch it run.
 
 ---
 

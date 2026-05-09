@@ -1,4 +1,4 @@
-name: AI PR Reviewer
+name: Agentic Code Reviewer
 
 on:
   pull_request:
@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   review:
-    name: Review PR with AI Agent
+    name: Review PR with Agentic Code Reviewer
     runs-on: ubuntu-latest
 
     steps:
