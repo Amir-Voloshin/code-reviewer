@@ -85,7 +85,7 @@ python entrypoint.py
 
 ```bash
 # 1. Verify the GitHub MCP server starts
-npx -y @github-mcp-server/github-mcp-server stdio
+npx -y @modelcontextprotocol/server-github
 
 # 2. Verify MCP tool loading
 python - <<'EOF'

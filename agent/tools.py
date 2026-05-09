@@ -12,8 +12,7 @@ def make_mcp_client() -> MultiServerMCPClient:
                 "command": "npx",
                 "args": [
                     "-y",
-                    "@github-mcp-server/github-mcp-server",
-                    "stdio",
+                    "@modelcontextprotocol/server-github",
                 ],
                 "env": {
                     "GITHUB_PERSONAL_ACCESS_TOKEN": token,
